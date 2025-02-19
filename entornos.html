@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Virtual - ENTORNOS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1d4ed8;
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --theme-color: #38bdf8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-color);
+            color: white;
+        }
+
+        .nav-container {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .theme {
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .theme-header {
+            padding: 1.5rem;
+            background: rgba(56, 189, 248, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-header:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .theme-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .theme-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .theme.active .theme-content {
+            max-height: 1000px;
+        }
+
+        .theme-inner {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .content-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .arrow-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .theme.active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Animación para contenido del tema */
+        .theme-content > * {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .theme.active .theme-content > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <h1 class="nav-title">Redes</h1>
+    </nav>
+
+    <main class="main-container" id="themeContainer">
+        <!-- Los temas se generan desde JavaScript -->
+    </main>
+
+    <script>
+        // Datos de los temas (esto simularía venir de una base de datos o archivo de configuración)
+        const themesData = [
+            {
+                title: "Java Trimestral",
+                content: [
+                    //"1.1 Conceptos básicos de redes",
+                    
+                ]
+            }
+        ];
+
+        // Función para generar el HTML de los temas
+        function generateThemes() {
+            const container = document.getElementById('themeContainer');
+            
+            themesData.forEach((theme, index) => {
+                const themeElement = document.createElement('div');
+                themeElement.className = 'theme';
+                themeElement.innerHTML = `
+                    <div class="theme-header" onclick="toggleTheme(${index})">
+                        <div class="theme-title">${theme.title}</div>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="theme-content">
+                        <div class="theme-inner">
+                            ${theme.content.map(item => `
+                                <div class="content-item">
+                                    ${item}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(themeElement);
+            });
+        }
+
+        // Función para alternar la visibilidad de un tema
+        function toggleTheme(index) {
+            const themes = document.querySelectorAll('.theme');
+            themes[index].classList.toggle('active');
+        }
+
+        // Generar los temas al cargar la página
+        document.addEventListener('DOMContentLoaded', generateThemes);
+    </script>
+</body>
+</html>
